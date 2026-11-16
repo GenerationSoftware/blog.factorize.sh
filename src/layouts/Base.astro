@@ -1,0 +1,43 @@
+---
+import '../styles/global.css';
+interface Props { title: string; description: string; article?: boolean; published?: Date; }
+const { title, description, article = false, published } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title === 'Factorize Blog' ? title : `${title} · Factorize Blog`}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/bee-mark.svg" />
+    <link rel="alternate" type="application/rss+xml" title="Factorize Blog" href="/rss.xml" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Factorize Blog" />
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    {published && <meta property="article:published_time" content={published.toISOString()} />}
+    <meta name="twitter:card" content="summary" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <nav class="shell" aria-label="Main navigation">
+        <a class="brand" href="https://factorize.sh"><img src="/bee-mark.svg" alt="" width="26" height="26" />Factorize</a>
+        <div class="nav-links">
+          <a href="/" aria-current={Astro.url.pathname === '/' ? 'page' : undefined} class="active">Blog</a>
+          <a href="https://docs.factorize.sh">Docs</a>
+          <a href="https://app.factorize.sh/">Log in <span aria-hidden="true">↗</span></a>
+        </div>
+      </nav>
+    </header>
+    <main id="main" class="shell"><slot /></main>
+    <footer class="shell site-footer">
+      <p>Software factories for everybody.</p>
+      <div><a href="https://factorize.sh">Factorize</a><a href="/rss.xml">RSS feed <span aria-hidden="true">↗</span></a><a href="https://github.com/GenerationSoftware/blog.factorize.sh">Source <span aria-hidden="true">↗</span></a></div>
+    </footer>
+  </body>
+</html>

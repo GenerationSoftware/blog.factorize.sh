@@ -1,0 +1,26 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { publishedPosts, formatDate, readingTime } from '../lib/posts';
+export async function getStaticPaths() {
+  return (await publishedPosts()).map(post => ({ params: { id: post.id }, props: { post } }));
+}
+interface Props { post: CollectionEntry<'posts'>; }
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const toc = headings.filter(heading => heading.depth === 2);
+---
+<Base title={post.data.title} description={post.data.description} article published={post.data.pubDate}>
+  <div class="article-top"><a class="back-link" href="/">← All writing</a><span class="category">{post.data.category}</span></div>
+  <article>
+    <header class="article-header">
+      <h1>{post.data.title}</h1>
+      <p class="article-description">{post.data.description}</p>
+      <div class="byline"><span>{post.data.author}</span><span aria-hidden="true">·</span><time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time><span aria-hidden="true">·</span><span>{readingTime(post.body)} min read</span></div>
+    </header>
+    <div class="article-grid">
+      <div class="prose"><Content /><div class="article-end"><span aria-hidden="true">✳</span><p>Thanks for reading.<br /><a href="/">More notes from the factory →</a></p></div></div>
+      {toc.length > 0 && <aside class="toc"><nav aria-label="On this page"><p class="eyebrow">In this post</p><ol>{toc.map(heading => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ol></nav></aside>}
+    </div>
+  </article>
+</Base>

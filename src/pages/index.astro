@@ -1,0 +1,26 @@
+---
+import Base from '../layouts/Base.astro';
+import { publishedPosts, formatDate, readingTime } from '../lib/posts';
+const posts = await publishedPosts();
+---
+<Base title="Factorize Blog" description="Notes on agents, automation, and building software factories. From the people building Factorize.">
+  <section class="intro" aria-labelledby="page-title">
+    <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> The Factorize blog</p>
+    <h1 id="page-title">Notes from<br />the factory<span class="accent">.</span></h1>
+    <p class="intro-description">Ideas, experiments, and lessons on turning everyday<br class="desktop-break" /> workflows into software factories.</p>
+  </section>
+  <section class="posts-section" aria-labelledby="posts-title">
+    <div class="section-heading"><h2 id="posts-title">Latest writing</h2><span>{String(posts.length).padStart(2, '0')} {posts.length === 1 ? 'entry' : 'entries'}</span></div>
+    <ol class="post-list">
+      {posts.map((post, index) => <li>
+        <a class="post-card" href={`/${post.id}/`}>
+          <div class="post-meta"><span class="category">{post.data.category}</span><time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time></div>
+          <div class="post-card-main"><div><h3>{post.data.title}</h3><p>{post.data.description}</p><span class="read-more">Read the story <span aria-hidden="true">↗</span></span></div><span class="post-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span></div>
+          <div class="post-card-footer"><span>{post.data.author}</span><span>{readingTime(post.body)} min read</span></div>
+        </a>
+      </li>)}
+    </ol>
+    {posts.length === 0 && <p class="empty-state">The first notes are on their way. <a href="/rss.xml">Subscribe via RSS</a> to follow along.</p>}
+  </section>
+  <aside class="follow-note"><span aria-hidden="true">↳</span><p>Good things take a few iterations.<br /><span>Follow along with the <a href="/rss.xml">RSS feed</a>.</span></p></aside>
+</Base>

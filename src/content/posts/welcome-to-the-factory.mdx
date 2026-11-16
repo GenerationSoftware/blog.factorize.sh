@@ -1,0 +1,47 @@
+---
+title: "Welcome to the factory"
+description: "A new home for notes on agents, automation, and the small steps that make a software factory."
+pubDate: 2026-11-16
+category: "From the factory"
+---
+
+import Note from '../../components/Note.astro';
+
+There is a lot of work between having an idea and getting useful software into somebody's hands. Some of it needs a person. Some of it is a repeatable sequence waiting to be written down.
+
+Factorize is built around a simple pattern: **a trigger, some context, and an agent**. A trigger starts the work. Context tells the agent what matters. The agent takes the next step.
+
+This blog is a place to explore that pattern, share what we learn, and think out loud about building software factories.
+
+## Start with one useful loop
+
+A factory does not have to start with a complicated pipeline. Start with one task you understand: what sets it in motion, what information it needs, and what a useful result looks like.
+
+Written as an illustrative JavaScript sketch, that loop might look like this:
+
+```javascript
+// A sketch of the pattern, not a Factorize SDK example.
+async function runJob(event) {
+  const context = await gatherContext(event);
+  const result = await runAgent({
+    instructions: 'Propose a focused change and explain how to verify it.',
+    context,
+  });
+
+  return requestReview(result);
+}
+```
+
+The interesting questions live inside those steps. Which context is actually useful? How do you decide when the result is good enough? Where should a person review the work?
+
+<Note title="Keep the feedback loop short">
+  Make one small workflow useful before connecting it to the next one. A clear result and a way to check it are good places to begin.
+</Note>
+
+## What you will find here
+
+We will use this space for notes on agent workflows, practical automation, and the decisions behind Factorize. Expect concrete examples, experiments, and lessons from building.
+
+If you are new to the project, start at [factorize.sh](https://factorize.sh). If you are ready to work on a factory of your own, the [documentation](https://docs.factorize.sh) is the next stop.
+
+Thanks for being here. Let's make something useful.

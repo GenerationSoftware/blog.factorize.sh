@@ -29,8 +29,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
         <a class="brand" href="https://factorize.sh"><img src="/bee-mark.svg" alt="" width="26" height="26" />Factorize</a>
         <div class="nav-links">
           <a href="/" aria-current={Astro.url.pathname === '/' ? 'page' : undefined} class="active">Blog</a>
-          <a href="https://docs.factorize.sh">Docs</a>
-          <a href="https://app.factorize.sh/">Log in <span aria-hidden="true">↗</span></a>
+          <a href="/rss.xml">RSS <span aria-hidden="true">↗</span></a>
         </div>
       </nav>
     </header>
